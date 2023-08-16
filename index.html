@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Live Stream</title>
+</head>
+<body>
+    <video id="live" autoplay></video>
+
+    <script>
+        var video = document.getElementById('live');
+        var streamUrl = 'rtmp://localhost/live/{your-github-username}/{your-repository-name}';
+
+        if (Hls.isSupported()) {
+            var hls = new Hls();
+            hls.loadSource(streamUrl);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED,function() {
+                video.play();
+            });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = streamUrl;
+            video.addEventListener('loadedmetadata',function() {
+                video.play();
+            });
+        }
+    </script>
+</body>
+</html>
